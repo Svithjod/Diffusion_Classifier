@@ -24,11 +24,7 @@ $$
 p_\theta(\mathbf{c}_i\mid\mathbf{x})=\frac{p(\mathbf{c}_i)\ p_\theta(\mathbf{x}\mid\mathbf{c}_i)}{\sum_j p(\mathbf{c}_j)\ p_\theta(\mathbf{x}\mid\mathbf{c}_j))}
 $$
 
-A uniform prior over $\mathbf{c}_i$ (i.e., $p(\mathbf{c}_i) = \frac{1}{N}$) cancels all the $p(\mathbf{c})$ terms, and by further replacing 
-
-$$\text{log}\ p_\theta(\mathbf{x}\mid\mathbf{c})$$
-
-with ELBO, we have,
+A uniform prior over $\mathbf{c}_i$ cancels all the $p(\mathbf{c})$ terms, and by further replacing the log-likelihood with ELBO, we have,
 
 $$
 \begin{aligned}
