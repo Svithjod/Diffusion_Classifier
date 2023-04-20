@@ -305,6 +305,8 @@ class DDPM(nn.Module):
 
             for ci in range(self.n_classes):
                 _noise, pred = self(x, ci*torch.ones(x.size(0), dtype=int, device=self.device), noise, _ts)
-                loss_sum[:, ci] += torch.tensor([self.loss_mse(noise_i, pred_i) for noise_i, pred_i in zip(noise, pred)], device=self.device)
+                loss_sum[:, ci] += torch.tensor([self.loss_mse(noise_i, pred_i)
+                                                   for noise_i, pred_i in zip(noise, pred)],
+                                                device=self.device)
             
         return torch.argmin(loss_sum, dim=1)

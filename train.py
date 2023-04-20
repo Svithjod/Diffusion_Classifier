@@ -47,7 +47,8 @@ def get_args_parser():
 
 def train_mnist(args):
 
-    ddpm = DDPM(nn_model=ContextUnet(in_channels=1, n_feat=args.n_feat, n_classes=args.n_classes), n_classes=args.n_classes, betas=(1e-4, 0.02), n_T=args.n_T, device=args.device, drop_prob=0.1)
+    ddpm = DDPM(nn_model=ContextUnet(in_channels=1, n_feat=args.n_feat, n_classes=args.n_classes), 
+                n_classes=args.n_classes, betas=(1e-4, 0.02), n_T=args.n_T, device=args.device, drop_prob=0.1)
     ddpm.to(args.device)
 
     print('Model = %s' % str(ddpm))
@@ -111,7 +112,8 @@ def train_mnist(args):
                     print('saved image at ' + image_path)
 
                     # create gif of images evolving over time, based on x_gen_store
-                    fig, axs = plt.subplots(nrows=int(n_sample/args.n_classes), ncols=args.n_classes,sharex=True,sharey=True,figsize=(8,3))
+                    fig, axs = plt.subplots(nrows=int(n_sample/args.n_classes), ncols=args.n_classes,
+                                            sharex=True, sharey=True, figsize=(8,3))
                     def animate_diff(i, x_gen_store):
                         print(f'gif animating frame {i} of {x_gen_store.shape[0]}', end='\r')
                         plots = []
@@ -120,9 +122,13 @@ def train_mnist(args):
                                 axs[row, col].clear()
                                 axs[row, col].set_xticks([])
                                 axs[row, col].set_yticks([])
-                                plots.append(axs[row, col].imshow(-x_gen_store[i,(row*args.n_classes)+col,0],cmap='gray',vmin=(-x_gen_store[i]).min(), vmax=(-x_gen_store[i]).max()))
+                                plots.append(axs[row, col].imshow(-x_gen_store[i,(row*args.n_classes)+col,0],
+                                                                  cmap='gray',
+                                                                  vmin=(-x_gen_store[i]).min(),
+                                                                  vmax=(-x_gen_store[i]).max()))
                         return plots
-                    ani = FuncAnimation(fig, animate_diff, fargs=[x_gen_store],  interval=200, blit=False, repeat=True, frames=x_gen_store.shape[0])    
+                    ani = FuncAnimation(fig, animate_diff, fargs=[x_gen_store],
+                                        interval=200, blit=False, repeat=True, frames=x_gen_store.shape[0])    
                     gif_path = os.path.join(args.output_dir, f'gif_ep{ep}_w{w}.gif')
                     ani.save(gif_path, dpi=100, writer=PillowWriter(fps=5))
                     print('saved image at ' + gif_path)

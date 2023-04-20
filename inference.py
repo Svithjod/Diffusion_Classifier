@@ -34,9 +34,11 @@ def get_args_parser():
 def inference_mnist(args):
 
     # don't drop context for inference
-    ddpm = DDPM(nn_model=ContextUnet(in_channels=1, n_feat=args.n_feat, n_classes=args.n_classes), n_classes=args.n_classes, betas=(1e-4, 0.02), n_T=args.n_T, device=args.device, drop_prob=0.1)
+    ddpm = DDPM(nn_model=ContextUnet(in_channels=1, n_feat=args.n_feat, n_classes=args.n_classes), 
+                n_classes=args.n_classes, betas=(1e-4, 0.02), n_T=args.n_T, device=args.device, drop_prob=0.0)
     ddpm.load_state_dict(torch.load(args.saved_model))
     ddpm.to(args.device)
+    ddpm = torch.compile(ddpm)
 
     tf = transforms.Compose([transforms.ToTensor()]) # mnist is already normalised 0 to 1
     dataset = MNIST(args.data_path, train=False, download=False, transform=tf)
