@@ -25,12 +25,14 @@ p_\theta(\mathbf{c}_i\mid\mathbf{x})=\frac{p(\mathbf{c}_i)\ p_\theta(\mathbf{x}\
 $$
 
 A uniform prior over $\{\mathbf{c}_i\}$ (i.e., $p(\mathbf{c}_i) = \frac{1}{N}$) cancels all the $p(\mathbf{c})$ terms, and by further replacing $\text{log}\ p_\theta(\mathbf{x}\mid\mathbf{c})$ with ELBO, we have,
+
 $$
 \begin{aligned}
 p_\theta(\mathbf{c}_i \mid \mathbf{x}) & \approx \frac{\exp \{-\mathbb{E}_{t, \epsilon}[\|\epsilon-\epsilon_\theta(\mathbf{x}_t, \mathbf{c}_i)\|^2]+C\}}{\sum_j \exp \{-\mathbb{E}_{t, \epsilon}[\|\epsilon-\epsilon_\theta(\mathbf{x}_t, \mathbf{c}_j)\|^2]+C\}} \\
 & =\frac{\exp \{-\mathbb{E}_{t, \epsilon}[\|\epsilon-\epsilon_\theta(\mathbf{x}_t, \mathbf{c}_i)\|^2]\}}{\sum_j \exp \{-\mathbb{E}_{t, \epsilon}[\|\epsilon-\epsilon_\theta(\mathbf{x}_t, \mathbf{c}_j)\|^2]\}}
 \end{aligned}
 $$
+
 which can be estimated by Monte Carlo sampling (see [Your Diffusion Model is Secretly a Zero-Shot Classifier](http://arxiv.org/abs/2303.16203)). 
 
 During bayesian inference, we no longer drop $c_e$ for we estimate the relative confidence in every class given an image. And we set $w=0$, unlike the sampling procedure for generation. The model samples $N$ pairs of $(t, \epsilon_{t})$ for inference, the larger the $N$, the more accurate the estimation. 
